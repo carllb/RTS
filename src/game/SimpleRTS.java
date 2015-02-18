@@ -3,6 +3,7 @@ package game;
 import game.collision.BoundingBox;
 import game.gameObjects.Block;
 import game.gameObjects.GameObject;
+import game.gameObjects.Turret;
 import game.hud.HUDButton;
 import game.hud.HUDButtonClicked;
 import game.hud.RTSHUD;
@@ -65,10 +66,23 @@ public class SimpleRTS implements Game{
 			@Override
 			public void buttonClicked() {
 				GameObject o = new Block( new BoundingBox(20,20,perspective.x, perspective.y));
+				
 				world.addGameObject(o);
+			}
+			
+			
+		});
+		
+		HUDButton turret = new HUDButton("Add Turret", 100,50, 310, 200, new HUDButtonClicked() {
+			@Override
+			public void buttonClicked() {
+				BoundingBox b = new BoundingBox(20,20,perspective.x, perspective.y);
+				GameObject p = new Turret(b.getX(), b.getY(), b);
+				world.addGameObject(p);
 			}
 		});
 		hud.addButton(addBlock);
+		hud.addButton(turret);
 	}
 	
 	

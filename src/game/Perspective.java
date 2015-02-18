@@ -27,6 +27,7 @@ public class Perspective {
 		if (keys.isKeyDown(map.getKey("RIGHT"))) {
 			x += SPEED;
 		}
+		
 	}
 
 }
