@@ -19,7 +19,7 @@ public class GameObject implements Serializable{
 	protected int xInc = 0, yInc = 0;
 	BoundingBox bounds;
 	transient World world;
-
+	public int tickCount;
 	public GameObject(int x, int y, BoundingBox bounds) {
 		this.x = x;
 		this.y = y;
@@ -31,12 +31,19 @@ public class GameObject implements Serializable{
 		g.drawChars("NO render".toCharArray(), 0, "NO render".length(), x, y);
 	}
 
+/*	public boolean addCond()
+	{
+		
+	}
+	*/
+	
 	public void incrimentStep(int x, int y) {
 		xInc += x;
 		yInc += y;
 	}
 
 	public void tick() {
+		tickCount++;
 		if(bounds == null){
 			x += xInc;
 			y += yInc;

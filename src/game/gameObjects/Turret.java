@@ -3,11 +3,11 @@ package game.gameObjects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.util.Timer;
 
 import game.collision.BoundingBox;
 
-public class Turret extends GameObject{
-
+public class Turret extends GameObject implements TickSpawn{
 	int [] xs = new int[3];
 	int [] ys = new int[3];
 	public Turret(int x, int y, BoundingBox bounds) {
@@ -24,6 +24,15 @@ public class Turret extends GameObject{
 		g.setColor(Color.GREEN);
 		g.fillPolygon(new Polygon(xs, ys, 3));
 	}
+
+	@Override
+	public boolean onTick() {
+		if (super.tickCount % 10 == 0)
+			return true;
+		return false;
+	}
+	
+	
 	
 	
 

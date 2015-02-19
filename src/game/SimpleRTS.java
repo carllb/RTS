@@ -25,13 +25,14 @@ public class SimpleRTS implements Game{
 		gm.startGame();
 	}
 	
-	Perspective perspective;
-	World world;
+	static Perspective perspective;
+	static World world;
 	KeyHandler input;
 	KeyMapping map;
+	AddObject obj = new AddObject();
 	File keyMapFile = new File("keymap");
 	Display display;
-	RTSHUD hud;
+	static RTSHUD hud;
 	
 	public SimpleRTS(){
 		input = new KeyHandler();		
@@ -61,28 +62,7 @@ public class SimpleRTS implements Game{
 	}
 	
 	void loadandtest(){
-		HUDButton addBlock = new HUDButton("Add Block", 100,50, 200, 200, new HUDButtonClicked() {
-			
-			@Override
-			public void buttonClicked() {
-				GameObject o = new Block( new BoundingBox(20,20,perspective.x, perspective.y));
-				
-				world.addGameObject(o);
-			}
-			
-			
-		});
 		
-		HUDButton turret = new HUDButton("Add Turret", 100,50, 310, 200, new HUDButtonClicked() {
-			@Override
-			public void buttonClicked() {
-				BoundingBox b = new BoundingBox(20,20,perspective.x, perspective.y);
-				GameObject p = new Turret(b.getX(), b.getY(), b);
-				world.addGameObject(p);
-			}
-		});
-		hud.addButton(addBlock);
-		hud.addButton(turret);
 	}
 	
 	
@@ -91,6 +71,7 @@ public class SimpleRTS implements Game{
 		world.tick();
 		perspective.tick();
 		hud.tick();
+		obj.tick();
 		display.repaint();
 	}
 	
