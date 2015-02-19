@@ -9,6 +9,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.io.Serializable;
 
+import physics.Vector;
+
 public class GameObject implements Serializable{
 
 	/**
@@ -19,6 +21,7 @@ public class GameObject implements Serializable{
 	protected int xInc = 0, yInc = 0;
 	BoundingBox bounds;
 	transient World world;
+	Vector move;
 	public int tickCount;
 	public GameObject(int x, int y, BoundingBox bounds) {
 		this.x = x;
@@ -40,6 +43,11 @@ public class GameObject implements Serializable{
 	public void incrimentStep(int x, int y) {
 		xInc += x;
 		yInc += y;
+	}
+	
+	public void setVec(Vector v)
+	{
+		move = v;
 	}
 
 	public void tick() {

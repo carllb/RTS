@@ -38,7 +38,16 @@ public class AddObject {
 	
 	public void periodicSpawn()
 	{
-		
+		for (GameObject o: objects)
+		{
+			if (o instanceof Turret)
+			{
+				if (((Turret) o).onTick())
+				{
+					
+				}
+			}
+		}
 	}
 	
 	
