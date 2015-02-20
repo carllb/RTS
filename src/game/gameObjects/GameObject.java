@@ -21,7 +21,7 @@ public class GameObject implements Serializable{
 	protected int xInc = 0, yInc = 0;
 	BoundingBox bounds;
 	transient World world;
-	Vector move;
+	Vector vel;
 	public int tickCount;
 	public GameObject(int x, int y, BoundingBox bounds) {
 		this.x = x;
@@ -34,20 +34,15 @@ public class GameObject implements Serializable{
 		g.drawChars("NO render".toCharArray(), 0, "NO render".length(), x, y);
 	}
 
-/*	public boolean addCond()
-	{
-		
-	}
-	*/
-	
+
 	public void incrimentStep(int x, int y) {
 		xInc += x;
 		yInc += y;
 	}
-	
-	public void setVec(Vector v)
+
+	public void setVel(Vector v)
 	{
-		move = v;
+		vel = v;
 	}
 
 	public void tick() {
@@ -62,6 +57,11 @@ public class GameObject implements Serializable{
 		bounds.move(x + xInc, y + yInc);
 		BoundingBox box = world.getCollisionWorld().isColliding(bounds);
 		if (box == null) {
+			if (!(vel == null))
+			{
+				xInc = (int) vel.getX();
+				yInc = (int) vel.getY();
+			}
 			x += xInc;
 			y += yInc;
 		} else if (xInc != 0 || yInc != 0) {
@@ -72,8 +72,8 @@ public class GameObject implements Serializable{
 		} else {
 			// do nothing
 		}
-//		x += xInc;
-//		y += yInc;
+		//		x += xInc;
+		//		y += yInc;
 		xInc = 0;
 		yInc = 0;
 	}
@@ -88,16 +88,16 @@ public class GameObject implements Serializable{
 		if (bounds != null)
 			world.getCollisionWorld().remove(bounds);
 	}
-	
+
 	public void setLocation(int x, int y){
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	public Point getLocation(){
 		return new Point(x,y);
 	}
-	
+
 	public BoundingBox getBounds(){
 		return bounds;
 	}

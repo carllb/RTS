@@ -10,6 +10,7 @@ import game.collision.BoundingBox;
 public class Turret extends GameObject implements TickSpawn{
 	int [] xs = new int[3];
 	int [] ys = new int[3];
+	
 	public Turret(int x, int y, BoundingBox bounds) {
 		super(bounds.getX(), bounds.getY(), bounds);
 		xs[0] = x; xs[1] =  x + 5; xs[2] = x + 10;
