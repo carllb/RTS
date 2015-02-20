@@ -16,7 +16,7 @@ public class World implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -5657915675211099554L;
-	ArrayList<GameObject> objects = AddObject.objects;
+	ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	CollisionWorld cWorld;
 	int width,height;
 

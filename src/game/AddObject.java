@@ -8,7 +8,6 @@ import game.hud.HUDButtonClicked;
 
 public class AddObject {
 
-	static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	ArrayList<GameObject> read = new ArrayList<GameObject>();
 
 	public void hudListenSpawn()
@@ -34,17 +33,17 @@ public class AddObject {
 	}
 
 
-
 	public void keyListenSpawn(){}
 
 	public void periodicSpawn()
 	{
-		/*
-		int x, y;
-		for (int i = 0; i < objects.size(); i++)
+
+		for (int i = 0; i < SimpleRTS.world.getObjects().size(); i++)
 		{
-			read.add(objects.get(i));
+			read.add(SimpleRTS.world.getObjects().get(i));
 		}
+
+		int x, y;
 		for (GameObject o: read)
 		{
 			if (o instanceof Turret)
@@ -53,10 +52,10 @@ public class AddObject {
 				{
 					x = (int) o.getLocation().getX();
 					y = (int) o.getLocation().getY();
-					SimpleRTS.world.addGameObject(new Bullet (x, y, new BoundingBox(2, 2, x, y)));
+					SimpleRTS.world.addGameObject(new Bullet (x - 3, y - 3));
 				}
 			}
-		}*/
+		}
 	}
 
 

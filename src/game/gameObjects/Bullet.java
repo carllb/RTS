@@ -8,9 +8,9 @@ import physics.Vector;
 
 public class Bullet extends GameObject{
 	
-	public Bullet(int x, int y, BoundingBox b) {
-		super(x, y, b);
-		setVel(new Vector(3, (float) (2 * Math.PI / 3)));
+	public Bullet(int x, int y) {
+		super(x, y, null);
+		setVel(new Vector(20, (float) (2 * Math.PI / 3)));
 	}
 	
 	@Override

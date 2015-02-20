@@ -52,7 +52,7 @@ public class SimpleRTS implements Game{
 			createKeyMap();
 		}
 		perspective = new Perspective(input,map);
-		world = new World(5000, 5000);
+		world = new World(500, 500);
 		display = new Display(world, perspective);
 		display.setVisible(true);
 		display.addKeyListener(input);
