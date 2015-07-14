@@ -67,6 +67,7 @@ public class GameManager implements Runnable{
 
 			mEndTime = System.currentTimeMillis();
 			calculateFPS(mStartTime, mEndTime);
+			
 		}
 		game.end();
 	}

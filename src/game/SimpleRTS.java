@@ -78,6 +78,7 @@ public class SimpleRTS implements Game{
 		perspective.tick();
 		hud.tick();
 		display.repaint();
+		display.setTitle("FPS: " + gm.FPS);
 	}
 	
 

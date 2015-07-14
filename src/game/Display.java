@@ -71,5 +71,17 @@ public class Display extends JFrame{
 		g.drawImage(rImage, 0, 0, null);
 		
 	}
+	long startT = 0;
+	long endT = 0;
+	int calculateFPS(){
+		endT = System.currentTimeMillis();
+		long diff = endT - startT;
+		if(diff == 0)
+			return -1;
+		int fps = (int) (1000f/diff);
+		startT = System.currentTimeMillis();
+		return fps;
+		
+	}
 	
 }
