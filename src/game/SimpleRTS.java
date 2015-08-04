@@ -26,14 +26,14 @@ public class SimpleRTS implements Game{
 		gm.startGame();
 	}
 	
-	static Perspective perspective;
-	static World world;
+	Perspective perspective;
+	World world;
 	KeyHandler input;
 	KeyMapping map;
-	AddObject obj = new AddObject();
+	
 	File keyMapFile = new File("keymap");
 	Display display;
-	static RTSHUD hud;
+	RTSHUD hud;
 	
 	public SimpleRTS(){
 		input = new KeyHandler();		
@@ -53,7 +53,7 @@ public class SimpleRTS implements Game{
 			createKeyMap();
 		}
 		perspective = new Perspective(input,map);
-		world = new World(500, 500);
+		world = new World(1000, 1000);
 		display = new Display(world, perspective);
 		display.setVisible(true);
 		display.addKeyListener(input);
@@ -93,7 +93,6 @@ public class SimpleRTS implements Game{
 		world.tick();
 		perspective.tick();
 		hud.tick();
-		obj.tick();
 		display.repaint();
 		display.setTitle("FPS: " + gm.FPS);
 	}
