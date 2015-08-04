@@ -43,7 +43,7 @@ public class World implements Serializable{
 		o.setWorld(this);
 		objects.add(o);
 	}
-
+	
 	public void removeGameObject(GameObject object) {
 		objects.remove(object);
 		object.removedFromWorld();

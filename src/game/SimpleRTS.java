@@ -3,6 +3,7 @@ package game;
 import game.collision.BoundingBox;
 import game.gameObjects.Block;
 import game.gameObjects.GameObject;
+import game.gameObjects.Turret;
 import game.hud.HUDButton;
 import game.hud.HUDButtonClicked;
 import game.hud.MouseClicked;
@@ -25,13 +26,14 @@ public class SimpleRTS implements Game{
 		gm.startGame();
 	}
 	
-	Perspective perspective;
-	World world;
+	static Perspective perspective;
+	static World world;
 	KeyHandler input;
 	KeyMapping map;
+	AddObject obj = new AddObject();
 	File keyMapFile = new File("keymap");
 	Display display;
-	RTSHUD hud;
+	static RTSHUD hud;
 	
 	public SimpleRTS(){
 		input = new KeyHandler();		
@@ -51,7 +53,7 @@ public class SimpleRTS implements Game{
 			createKeyMap();
 		}
 		perspective = new Perspective(input,map);
-		world = new World(5000, 5000);
+		world = new World(500, 500);
 		display = new Display(world, perspective);
 		display.setVisible(true);
 		display.addKeyListener(input);
@@ -82,6 +84,7 @@ public class SimpleRTS implements Game{
 			}
 		});
 		hud.addButton(addBlock);
+		
 	}
 	
 	
@@ -90,6 +93,7 @@ public class SimpleRTS implements Game{
 		world.tick();
 		perspective.tick();
 		hud.tick();
+		obj.tick();
 		display.repaint();
 		display.setTitle("FPS: " + gm.FPS);
 	}

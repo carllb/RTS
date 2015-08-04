@@ -9,6 +9,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.io.Serializable;
 
+import physics.Vector;
+
 public class GameObject implements Serializable{
 
 	/**
@@ -21,11 +23,15 @@ public class GameObject implements Serializable{
 	transient World world;
 	public boolean selected = false;
 
+	Vector vel;
+	public int tickCount;
 	public GameObject(int x, int y, BoundingBox bounds) {
 		this.x = x;
 		this.y = y;
 		this.bounds = bounds;
-		bounds.setGameObject(this);
+		if(bounds != null){
+			bounds.setGameObject(this);
+		}
 	}
 
 	public void render(Graphics g) {
@@ -33,12 +39,19 @@ public class GameObject implements Serializable{
 		g.drawChars("NO render".toCharArray(), 0, "NO render".length(), x, y);
 	}
 
+
 	public void incrimentStep(int x, int y) {
 		xInc += x;
 		yInc += y;
 	}
 
+	public void setVel(Vector v)
+	{
+		vel = v;
+	}
+
 	public void tick() {
+		tickCount++;
 		if(bounds == null){
 			x += xInc;
 			y += yInc;
@@ -52,6 +65,11 @@ public class GameObject implements Serializable{
 		bounds.move(x + xInc, y + yInc);
 		BoundingBox box = world.getCollisionWorld().isColliding(bounds);
 		if (box == null) {
+			if (!(vel == null))
+			{
+				xInc = (int) vel.getX();
+				yInc = (int) vel.getY();
+			}
 			x += xInc;
 			y += yInc;
 		} else if (xInc != 0 || yInc != 0) {
@@ -62,8 +80,8 @@ public class GameObject implements Serializable{
 		} else {
 			// do nothing
 		}
-//		x += xInc;
-//		y += yInc;
+		//		x += xInc;
+		//		y += yInc;
 		xInc = 0;
 		yInc = 0;
 	}
@@ -79,16 +97,16 @@ public class GameObject implements Serializable{
 		if (bounds != null)
 			world.getCollisionWorld().remove(bounds);
 	}
-	
+
 	public void setLocation(int x, int y){
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	public Point getLocation(){
 		return new Point(x,y);
 	}
-	
+
 	public BoundingBox getBounds(){
 		return bounds;
 	}
