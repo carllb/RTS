@@ -19,11 +19,13 @@ public class GameObject implements Serializable{
 	protected int xInc = 0, yInc = 0;
 	BoundingBox bounds;
 	transient World world;
+	public boolean selected = false;
 
 	public GameObject(int x, int y, BoundingBox bounds) {
 		this.x = x;
 		this.y = y;
 		this.bounds = bounds;
+		bounds.setGameObject(this);
 	}
 
 	public void render(Graphics g) {
@@ -42,6 +44,9 @@ public class GameObject implements Serializable{
 			y += yInc;
 			xInc = 0;
 			yInc = 0;
+			return;
+		}
+		if(xInc == 0 && yInc == 0){
 			return;
 		}
 		bounds.move(x + xInc, y + yInc);
@@ -66,6 +71,7 @@ public class GameObject implements Serializable{
 	public void setWorld(World world) {
 		this.world = world;
 		if (bounds != null && world.getCollisionWorld() != null)
+		//	System.out.println("Gameobject.java: added bounds");
 			world.getCollisionWorld().addBoundingBox(bounds);
 	}
 
@@ -85,6 +91,15 @@ public class GameObject implements Serializable{
 	
 	public BoundingBox getBounds(){
 		return bounds;
+	}
+	
+	public void levelClicked(int mx, int my){
+		
+	}
+	
+	public void removeFromCollisionWorld(){
+		if(world != null)
+			world.getCollisionWorld().remove(bounds);
 	}
 
 }

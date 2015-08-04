@@ -5,6 +5,7 @@ import game.gameObjects.Block;
 import game.gameObjects.GameObject;
 import game.hud.HUDButton;
 import game.hud.HUDButtonClicked;
+import game.hud.MouseClicked;
 import game.hud.RTSHUD;
 
 import java.io.File;
@@ -64,8 +65,20 @@ public class SimpleRTS implements Game{
 			
 			@Override
 			public void buttonClicked() {
-				GameObject o = new Block( new BoundingBox(20,20,perspective.x, perspective.y));
-				world.addGameObject(o);
+				MouseClicked mc = new MouseClicked() {
+					
+					@Override
+					public void mouseClicked(int x, int y) {
+						GameObject o = new Block( new BoundingBox(20,20,x, y));
+						if(world.getCollisionWorld().allColisions(o.getBounds()).size() == 0){
+							world.addGameObject(o);							
+						}
+						hud.placeObjectOnMouse(null);
+					}
+				};
+				
+				hud.setMouseBusy(mc);
+				hud.placeObjectOnMouse(new Block( new BoundingBox(20, 20, 0, 0)));
 			}
 		});
 		hud.addButton(addBlock);
@@ -96,5 +109,4 @@ public class SimpleRTS implements Game{
 	void createKeyMap(){
 		map = new KeyMapping(input);
 	}
-	
 }

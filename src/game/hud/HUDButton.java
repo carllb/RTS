@@ -58,6 +58,10 @@ public class HUDButton {
 	public void setOver(boolean over) {
 		this.over = over;
 	}
+	
+	public boolean getOver(){
+		return over;
+	}
 
 	public int getHeight() {
 		return height;
@@ -73,6 +77,14 @@ public class HUDButton {
 
 	public int getY() {
 		return y;
+	}
+	
+	public void setText(String text){
+		this.text = text;
+	}
+	
+	public String getText(){
+		return text;
 	}
 
 }

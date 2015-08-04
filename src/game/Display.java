@@ -28,10 +28,14 @@ public class Display extends JFrame{
 	private double oldY = -1;
 	private double tween = 1;
 	
+	Toolkit t = getToolkit();	
+	
 	public Display(World world, Perspective p){
 		super("Game");
-		setSize(640, 480);
-		setResizable(false);		
+		setSize(t.getScreenSize().width,t.getScreenSize().height);
+		//setSize(640,480);
+		setUndecorated(true);
+		setResizable(true);		
 		setLocation(Toolkit.getDefaultToolkit().getScreenSize().width/2-getWidth()/2,Toolkit.getDefaultToolkit().getScreenSize().height/2-getHeight()/2);
 		this.world = world;
 		perspective = p;

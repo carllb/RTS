@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ public class World implements Serializable{
 	ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	CollisionWorld cWorld;
 	int width,height;
+	public boolean singleSelected = false;
 
 	public World(int width, int height) {
 		cWorld = new CollisionWorld();
@@ -89,5 +89,14 @@ public class World implements Serializable{
 	public ArrayList<GameObject> getObjects(){
 		return objects;
 	}
+	
+	public void unSelectAllObjects(){
+		for (int i = 0; i < objects.size(); i++) {
+			objects.get(i).selected = false;
+		}
+		singleSelected = false;
+	}
+	
+	
 	
 }

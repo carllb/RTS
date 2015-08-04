@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.geom.Point2D;
+
 public class Perspective {
 
 	public int x, y;
@@ -27,6 +29,6 @@ public class Perspective {
 		if (keys.isKeyDown(map.getKey("RIGHT"))) {
 			x += SPEED;
 		}
-	}
+	}	
 
 }

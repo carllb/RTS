@@ -5,7 +5,6 @@ import game.DrawUtils;
 import game.Perspective;
 import game.World;
 import game.collision.BoundingBox;
-import game.collision.SelectableBoundingBox;
 import game.gameObjects.GameObject;
 import game.gameObjects.Wall;
 
@@ -22,11 +21,16 @@ public class RTSHUD implements HUD, MouseListener {
 
 	World world;
 	Perspective perspective;
+	HUDTabList tabs;
 	ArrayList<HUDButton> buttons = new ArrayList<HUDButton>();
+	ArrayList<GameObject> selectedUnits = new ArrayList<GameObject>();
 	private Point2D mouse;
 	Display display;
 	boolean rDown = false;
 	Point2D rStart;
+	private MouseClicked mc = null;
+	GameObject mouseObject;
+
 
 	public RTSHUD(Perspective p, World w, Display display) {
 		perspective = p;
@@ -41,7 +45,10 @@ public class RTSHUD implements HUD, MouseListener {
 			buttons.get(i).paint(g3);
 		}
 		drawSelection(g3);
-
+		if(mouseObject != null){
+			mouseObject.setLocation((int) mouse.getX(),(int)  mouse.getY());			
+			mouseObject.render(g3);
+		}
 	}
 
 	void drawSelection(Graphics g) {
@@ -59,18 +66,6 @@ public class RTSHUD implements HUD, MouseListener {
 			g.drawRect((int) rStart.getX(), (int) mouse.getY(),
 					(int) (-rStart.getX() + mouse.getX()),
 					(int) (rStart.getY() - mouse.getY()));
-		}
-	}
-
-	void drawSelectionAroundBoxes(Graphics g) {
-		g.setColor(Color.GREEN);
-		for (int i = 0; i < world.getCollisionWorld().getBoundingBoxes().size(); i++) {
-			BoundingBox b = world.getCollisionWorld().getBoundingBoxes().get(i);
-			if ((b instanceof SelectableBoundingBox)) {
-				if (((SelectableBoundingBox) b).getSelected()) {
-					DrawUtils.DrawRectangleAboutPoint(b.getX(), b.getY(), b.getW() + 2, b.getH() + 2, g);
-				}
-			}
 		}
 	}
 
@@ -96,6 +91,14 @@ public class RTSHUD implements HUD, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getButton() == 1) {
+			if(mc !=null ){
+				Point point = new Point((int) mouse.getX(), (int) mouse.getY());
+				pointReletiveToLevel(point);
+				mc.mouseClicked(point.x, point.y);
+				mc = null;
+				return;
+			}
+			//boolean button = false;
 			for (int i = 0; i < buttons.size(); i++) {
 				HUDButton b = buttons.get(i);
 				if (mouse.getX() >= b.getX()
@@ -103,9 +106,22 @@ public class RTSHUD implements HUD, MouseListener {
 					if (mouse.getY() >= b.getY()
 							&& mouse.getY() <= b.getY() + b.getHeight()) {
 						b.clicked();
+						return;
 					}
 				}
 			}
+			world.unSelectAllObjects();
+			selectedUnits.clear();
+			Point p = new Point((int) mouse.getX(), (int) mouse.getY());
+			pointReletiveToLevel(p);
+			BoundingBox box = new BoundingBox(1, 1,p.x , p.y);
+			List<BoundingBox> cols = world.getCollisionWorld().allColisions(box);
+			if(cols.size() > 0){
+				cols.get(0).getGameObject().selected = true;
+				selectedUnits.add(cols.get(0).getGameObject());
+				world.singleSelected = true;
+			}
+			world.getCollisionWorld().remove(box);			
 		}
 	}
 
@@ -124,8 +140,10 @@ public class RTSHUD implements HUD, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// System.out.println("down");
-		if (e.getButton() == 1) {
+		if (e.getButton() == 1 && !isMouseBusy()) {
 			rDown = true;
+			if(mouse == null)
+				return;
 			rStart = new Point((int) mouse.getX(), (int) mouse.getY());
 		}
 
@@ -140,31 +158,80 @@ public class RTSHUD implements HUD, MouseListener {
 			}
 			rDown = false;
 		}
+		
+		if(e.getButton() == 3){
+			levelClicked();
+		}
 	}
 
 	void selectUnits() {
-		System.out.println("select Units");
-	/*	BoundingBox selectionBox = new BoundingBox(
-				(int) (mouse.getX() - rStart.getX()) + perspective.x,
-				(int) (mouse.getY() - rStart.getY()) + perspective.y,
-				(int) (rStart.getX() + (mouse.getX() - rStart.getX()) / 2),
-				(int) (rStart.getX() + (mouse.getX() - rStart.getX()) / 2));
-	*/	
+		if(mouse == null){
+			return;
+		}
+		
 		int width = (int) (mouse.getX() - rStart.getX());
 		int height = (int) (mouse.getY() - rStart.getY());
+		
+		if(width==0 && height==0){
+			return;
+		}
+			
+		
+		world.unSelectAllObjects();
+		selectedUnits.clear();
+	
+		int w = 0, h = 0;
+		
+	//	sx = (int) mouse.getX() + (width<0?width:0);
+	//	sy = (int) mouse.getY() + (height<0?height:0);
+		w = Math.abs(width);
+		h = Math.abs(height);
+		
 		int x = (int) ((mouse.getX() - width/2) - display.getWidth() / 2) + perspective.x;
 		int y = (int) ((mouse.getY() - height/2) - display.getHeight() / 2) + perspective.y;
 		
-		BoundingBox selectionBox = new BoundingBox(width, height, x, y);
-		GameObject wall = new Wall(selectionBox);
-		world.addGameObject(wall);
+		BoundingBox selectionBox = null;
+		selectionBox = new BoundingBox(w, h, x, y);
+	//	GameObject wall = new Wall(selectionBox);
+	//	world.addGameObject(wall);
 		List<BoundingBox> boxes = world.getCollisionWorld().allColisions(
 				selectionBox);
 		for (int i = 0; i < boxes.size(); i++) {
-			if (boxes.get(i) instanceof SelectableBoundingBox) {
-				((SelectableBoundingBox) boxes.get(i)).select();
-				System.out.println("stuff");
-			}
+				selectedUnits.add(boxes.get(i).getGameObject());
+				boxes.get(i).getGameObject().selected = true;
+		}
+		world.singleSelected = (boxes.size() == 1);
+		world.getCollisionWorld().remove(selectionBox);
+	}
+	
+	void levelClicked(){
+		if(mouse == null)
+			return;
+		for(int i=0;i<selectedUnits.size();i++){
+			Point2D point = new Point((int) mouse.getX(), (int) mouse.getY());
+			pointReletiveToLevel(point);
+			selectedUnits.get(i).levelClicked((int) point.getX(),(int) point.getY());
+			
 		}
 	}
+	
+	public void pointReletiveToLevel(Point2D in){
+		in.setLocation(in.getX() - display.getWidth()/2 + perspective.x, in.getY() - display.getHeight()/2 + perspective.y);
+	}
+
+	public boolean isMouseBusy() {
+		return (mc !=null);
+	}
+
+	public void setMouseBusy(MouseClicked mc) {
+		this.mc = mc;
+	}
+	
+	public void placeObjectOnMouse(GameObject go){
+		mouseObject = go;
+		if(mouseObject != null)
+			mouseObject.removeFromCollisionWorld();
+	}
+	
+	
 }
