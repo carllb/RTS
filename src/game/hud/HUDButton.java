@@ -42,6 +42,7 @@ public class HUDButton {
 	}
 
 	void clicked(){
+		if(hbc != null)
 		hbc.buttonClicked();
 	}
 	
@@ -86,5 +87,8 @@ public class HUDButton {
 	public String getText(){
 		return text;
 	}
-
+	
+	public void setClickListener(HUDButtonClicked hbc){
+		this.hbc = hbc;
+	}
 }
