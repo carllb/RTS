@@ -50,7 +50,7 @@ public class HUDTabList {
 			}
 			int length = fm.stringWidth(tabs.get(i).name);
 			TabButton tb = new TabButton(tabs.get(i).name, length + 10, 30, lenSum, display.getHeight()*4/5,i);
-			lenSum += length;
+			lenSum += length*1.5;
 			tabButtons.add(tb);
 			((RTSHUD) display.getHUD()).addButton(tb);
 		}
@@ -80,12 +80,8 @@ public class HUDTabList {
 			Color c = Color.WHITE;
 			fm = g.getFontMetrics();
 			if (getOver()) {				
-				System.out.println("HUDTabList: GREEN: " + getText());
 				c = Color.GREEN;		
-			}
-		//	if(getText().equals("Items")){
-		//		System.out.println("HUDTabList: color: " + (g.getColor() == Color.GREEN) + " " + getText());
-		//	}
+			}		
 			g.setColor(c);
 			g.fillRect(getX(), getY(), getWidth(), getHeight());
 			g.setColor(Color.BLACK);
@@ -96,7 +92,7 @@ public class HUDTabList {
 		}		
 		@Override
 		void clicked() {
-			System.out.println("clicked");
+			currentTab = index;
 		}
 	}
 }
