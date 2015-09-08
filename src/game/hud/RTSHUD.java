@@ -49,6 +49,8 @@ public class RTSHUD implements HUD, MouseListener {
 			mouseObject.setLocation((int) mouse.getX(),(int)  mouse.getY());			
 			mouseObject.render(g3);
 		}
+		if(tabs != null)
+			tabs.render(g3);
 	}
 
 	void drawSelection(Graphics g) {
@@ -86,6 +88,9 @@ public class RTSHUD implements HUD, MouseListener {
 				b.setOver(false);
 			}
 		}
+		if(tabs != null && tabs.needupdate){
+			tabs.update();
+	 	}
 	}
 
 	@Override
@@ -231,6 +236,10 @@ public class RTSHUD implements HUD, MouseListener {
 		mouseObject = go;
 		if(mouseObject != null)
 			mouseObject.removeFromCollisionWorld();
+	}
+	
+	public void setTabList(HUDTabList htl){
+		this.tabs = htl;
 	}
 	
 	

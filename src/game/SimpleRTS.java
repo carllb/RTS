@@ -6,6 +6,8 @@ import game.gameObjects.GameObject;
 import game.gameObjects.Turret;
 import game.hud.HUDButton;
 import game.hud.HUDButtonClicked;
+import game.hud.HUDTab;
+import game.hud.HUDTabList;
 import game.hud.MouseClicked;
 import game.hud.RTSHUD;
 
@@ -84,7 +86,13 @@ public class SimpleRTS implements Game{
 			}
 		});
 		hud.addButton(addBlock);
-		
+		HUDTabList htl = new HUDTabList(display);
+		htl.addTab(new HUDTab(display, "Items"));
+		htl.addTab(new HUDTab(display, "Items2"));
+		htl.addTab(new HUDTab(display, "Items3"));
+		htl.addTab(new HUDTab(display, "Items4"));
+		hud.setTabList(htl);
+				
 	}
 	
 	

@@ -9,13 +9,20 @@ public class KeyHandler implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		keyBuffer[arg0.getKeyCode()] = true;
+		if (arg0.getKeyCode() >= 0 && arg0.getKeyCode() < keyBuffer.length - 1) {
+			keyBuffer[arg0.getKeyCode()] = true;
+		} else {
+			System.err.println("unknown key code: " + arg0.getKeyCode());
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		keyBuffer[arg0.getKeyCode()] = false;
-
+		if (arg0.getKeyCode() >= 0 && arg0.getKeyCode() < keyBuffer.length - 1) {
+			keyBuffer[arg0.getKeyCode()] = false;
+		} else {
+			System.err.println("unknown key code: " + arg0.getKeyCode());
+		}
 	}
 
 	@Override

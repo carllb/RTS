@@ -32,7 +32,7 @@ public class Display extends JFrame{
 	
 	public Display(World world, Perspective p){
 		super("Game");
-		setSize(t.getScreenSize().width,t.getScreenSize().height);
+		setSize(t.getScreenSize().width/4,t.getScreenSize().height/4);
 		//setSize(640,480);
 		setUndecorated(true);
 		setResizable(true);		
@@ -86,6 +86,10 @@ public class Display extends JFrame{
 		startT = System.currentTimeMillis();
 		return fps;
 		
+	}
+	
+	public HUD getHUD(){
+		return hud;
 	}
 	
 }
